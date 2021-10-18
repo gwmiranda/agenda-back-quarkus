@@ -1,63 +1,56 @@
 package org.guilherme.resource;
 
 import org.guilherme.entity.Pessoa;
-import org.guilherme.repository.PessoaRepository;
+import org.guilherme.service.PessoaService;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/pessoa")
+@ApplicationScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PessoaResource {
 
     @Inject
-    PessoaRepository pessoaRepository;
+    PessoaService pessoaService;
 
     @POST
     @Transactional
     public void salvar(Pessoa pessoa){
-        pessoaRepository.persist(pessoa);
+        pessoaService.salvar(pessoa);
     }
 
     @GET
     @Transactional
-    public List listaPessoa(){
-        List<Pessoa> pessoas = pessoaRepository.listAll();
-        return pessoas;
+    public List<Pessoa> listaPessoa(){
+        return pessoaService.listar();
     }
 
     @GET
     @Path("/{id}")
+    @Transactional
     public Pessoa procurarPessoa(@PathParam("id") Long id){
-        return pessoaRepository.findById(id);
+        return pessoaService.procurarPorId(id);
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
     public void atualizarPessoa(@PathParam("id") Long id, Pessoa pessoa){
-        Pessoa p = pessoaRepository.findById(id);
-        if(p == null){
-            throw new NotFoundException();
-        }
-        p.setNome(pessoa.getNome());
-        p.setSobrenome(pessoa.getSobrenome());
-        p.setNascimento(pessoa.getNascimento());
-        p.setParentesco(pessoa.getParentesco());
-        p.setContato(pessoa.getContato());
-        pessoaRepository.persist(p);
+        pessoaService.atualizar(id, pessoa);
     }
 
     @DELETE
     @Transactional
     @Path("/{id}")
     public void deletarPessoa(@PathParam("id") Long id){
-        if (!pessoaRepository.deleteById(id)) {
-            throw new WebApplicationException(404);
-        }
+        pessoaService.deletar(id);
     }
 }
