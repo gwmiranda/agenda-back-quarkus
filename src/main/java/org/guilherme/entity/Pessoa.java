@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 public class Pessoa {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,6 +21,7 @@ public class Pessoa {
     @CollectionTable(name = "contato", joinColumns = @JoinColumn(name = "pessoa_id"))
     @Fetch( FetchMode.JOIN)
     private List<Contato> contatos;
+    private String username;
 
     public Pessoa(){}
 
@@ -74,6 +76,14 @@ public class Pessoa {
 
     public void setContato(List<Contato> contatos) {
         this.contatos = contatos;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override

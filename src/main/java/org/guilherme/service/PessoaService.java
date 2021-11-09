@@ -3,20 +3,20 @@ package org.guilherme.service;
 import org.guilherme.entity.Pessoa;
 import org.guilherme.repository.PessoaRepository;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
 
-@ApplicationScoped
+@RequestScoped
 public class PessoaService implements Service<Pessoa> {
 
     @Inject
     PessoaRepository repository;
 
     @Override
-    public void salvar(Pessoa pessoa) {
+    public void gravar(Pessoa pessoa) {
         repository.persist(pessoa);
     }
 
@@ -51,5 +51,9 @@ public class PessoaService implements Service<Pessoa> {
     @Override
     public List listar() {
         return repository.listAll();
+    }
+
+    public List contatosPorUsuario(String username) {
+        return repository.contatosPorUsuario(username);
     }
 }

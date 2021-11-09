@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface Service<T> {
 
-    void salvar(T object);
+    void gravar(T object);
 
     void deletar(Long id);
 
     void atualizar(Long id, T object);
 
-    Pessoa procurarPorId(Long id);
+    T procurarPorId(Long id);
 
     List<T> listar();
 }
