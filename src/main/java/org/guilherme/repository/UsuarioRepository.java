@@ -10,10 +10,14 @@ import java.util.List;
 public class UsuarioRepository implements PanacheRepository<Usuario> {
 
     public List<Usuario> verificarLogin(Usuario usuario) {
-        return find(
-            "SELECT u.username, u.senha FROM Usuario u WHERE u.username = ?1 AND u.senha = ?2",
-                usuario.getUsername(),
-                usuario.getSenha())
-            .list();
+        return  find(
+            "username = ?1 and senha = ?2",
+            usuario.getUsername(),
+            usuario.getSenha()
+        ).list();
     }
 }
+
+//            "username = :username and senha = :senha",
+//            Parameters.with(
+//                "username", usuario.getUsername()).and("senha", usuario.getSenha())
